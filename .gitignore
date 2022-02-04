@@ -1,7 +1,5 @@
-node_modules/
+node_modules
 
 .turbo
 
-build/**
-dist/**
-.next/**
+build
