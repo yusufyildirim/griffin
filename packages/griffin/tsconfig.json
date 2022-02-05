@@ -1,9 +1,9 @@
 {
   "extends": "tsconfig/react-native.json",
   "compilerOptions": {
-    "rootDir": "./src",
+    "rootDir": ".",
     "outDir": "./build"
   },
-  "include": ["./src"],
+  "include": ["**/*.ts", "**/*.tsx", "../../apps/griffin-test-app/BUNDLES.ts"],
   "exclude": ["node_modules", "./build"]
 }
