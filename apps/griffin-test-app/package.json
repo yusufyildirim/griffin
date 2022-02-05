@@ -6,7 +6,9 @@
     "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "detox:build:ios": "detox build --configuration ios",
+    "detox:test:ios": "detox test --configuration ios --reuse"
   },
   "dependencies": {
     "expo": "~44.0.2",
@@ -18,7 +20,9 @@
     "react-native-web": "0.17.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "detox": "^19.4.3",
+    "jest": "^27.5.0"
   },
   "private": true
 }
