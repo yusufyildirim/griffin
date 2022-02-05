@@ -1,0 +1,20 @@
+
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Node",
+  "extends": "./base.json",
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": ["es6", "dom", "ES2020"],
+    "allowJs": true,
+    "module": "commonjs",
+    "jsx": "react-native",
+    "moduleResolution": "node"
+  },
+  "exclude": [
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js"
+  ]
+}

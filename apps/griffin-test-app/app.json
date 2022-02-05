@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "griffin-test-app",
+    "slug": "griffin-test-app",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "griffin-test-app"
+}

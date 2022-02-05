@@ -1,0 +1,25 @@
+{
+  "name": "griffin",
+  "version": "0.1.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc --build",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "socket.io-client": "^4.4.1",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/react-native": "*",
+    "@types/socket.io-client": "^3.0.0",
+    "@types/uuid": "^8.3.4",
+    "config": "*",
+    "tsconfig": "*"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  }
+}
