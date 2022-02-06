@@ -17,6 +17,10 @@ io.on('connection', socket => {
     socket.broadcast.emit('CLIENT_MOUNT_COMPONENT', componentId, props)
     callback()
   })
+
+  socket.on('COMPONENT_MOUNTED', id => {
+    socket.broadcast.emit('COMPONENT_MOUNTED', id)
+  })
 })
 
 server.listen(5678, () => {

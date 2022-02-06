@@ -1,25 +1,16 @@
 import * as React from 'react'
 import { View } from 'react-native'
-import { io, Socket } from 'socket.io-client'
 import { v4 as uuidv4 } from 'uuid'
+import GriffinComponentWrapper from './GriffinComponentWrapper'
+import { useSocket } from './hooks/useSocket'
+import { deserialize } from './utils/JSONSerializer'
 
-const useSocket = () => {
-  const [socket, _setSocket] = React.useState<Socket>(() => io('http://localhost:5678'))
-
-  React.useEffect(() => {
-    socket.open()
-
-    return () => {
-      socket.close()
-    }
-  }, [socket])
-
-  return socket
-}
 type GriffinRootProps = {
   components: Record<string, React.ComponentType>
+  Wrapper: React.ComponentType
 }
-export default function GriffinRoot({ components }: GriffinRootProps) {
+export default function GriffinRoot({ components, Wrapper }: GriffinRootProps) {
+  const internalComponentRef = React.useRef<{ id: string; uniqueId: string }>()
   const [Component, setComponent] = React.useState<JSX.Element | null>(null)
   const socket = useSocket()
 
@@ -28,14 +19,39 @@ export default function GriffinRoot({ components }: GriffinRootProps) {
       console.log('Component Socket ID', socket.id)
     })
 
-    socket.on('CLIENT_MOUNT_COMPONENT', (componentId: string, props: Record<string, unknown>) => {
-      console.log('Props', props)
+    socket.on('CLIENT_MOUNT_COMPONENT', (componentId: string, serializedProps: string, cb) => {
+      const props = deserialize(serializedProps)
       const Comp = components[componentId]
-      setComponent(<Comp key={uuidv4()} {...props} />)
+
+      if (Comp) {
+        internalComponentRef.current = { id: componentId, uniqueId: uuidv4() }
+        setComponent(<Comp {...props} />)
+      }
     })
-    const C = components['TEXT']
-    setComponent(<C children="wtfa" />)
   }, [socket])
 
-  return <View style={{ flex: 1 }}>{Component}</View>
+  if (!internalComponentRef.current?.id) return null
+  if (Wrapper) {
+    return (
+      <Wrapper>
+        <GriffinComponentWrapper
+          key={internalComponentRef.current.uniqueId}
+          socket={socket}
+          id={internalComponentRef.current.id}>
+          {Component}
+        </GriffinComponentWrapper>
+      </Wrapper>
+    )
+  }
+
+  return (
+    <View style={{ flex: 1 }}>
+      <GriffinComponentWrapper
+        key={internalComponentRef.current.uniqueId}
+        socket={socket}
+        id={internalComponentRef.current.id}>
+        {Component}
+      </GriffinComponentWrapper>
+    </View>
+  )
 }

@@ -1,10 +1,10 @@
 import { io, Socket } from 'socket.io-client'
+import { serialize } from './utils/JSONSerializer'
 
 let socket: Socket | undefined
 
 export async function init() {
   return new Promise((resolve, _reject) => {
-    // console.log('Initializing Puff..')
     socket = io('ws://localhost:5678')
     socket.on('connect', () => {
       resolve(socket)
@@ -18,15 +18,13 @@ export async function down() {
 }
 
 export async function mount(componentId: string, props: Record<string, unknown>) {
-  console.log('Mounting...', componentId)
-  // await device.reloadReactNative()
-
   return new Promise((resolve, reject) => {
-    socket?.emit('MOUNT_COMPONENT', componentId, props || {}, (err: unknown) => {
-      // console.log('Respwww')
+    socket?.emit('MOUNT_COMPONENT', componentId, serialize(props) || {}, (err: unknown) => {
       if (err) reject(err)
+    })
 
-      resolve(componentId)
+    socket?.on('COMPONENT_MOUNTED', id => {
+      if (id === componentId) resolve(componentId)
     })
   })
 }
