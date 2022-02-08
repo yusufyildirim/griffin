@@ -14,7 +14,8 @@
     "noUnusedParameters": false,
     "preserveWatchOutput": true,
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+    "typeRoots": ["./ts-declerations"]
   },
   "exclude": ["node_modules"]
 }

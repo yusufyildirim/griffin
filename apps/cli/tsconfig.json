@@ -1,15 +1,11 @@
 {
+  "extends": "tsconfig/node.json",
   "compilerOptions": {
     "declaration": true,
-    "importHelpers": true,
-    "module": "commonjs",
-    "outDir": "dist",
     "rootDir": "src",
-    "skipLibCheck": true,
-    "strict": true,
-    "target": "es2019"
+    "outDir": "dist",
+    "importHelpers": true,
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "./build"]
 }
