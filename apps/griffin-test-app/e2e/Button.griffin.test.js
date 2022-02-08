@@ -6,6 +6,6 @@ describe('Button', () => {
     const onPress = () => console.log(`Hadi lan`)
     await mount('BUTTON', { text: 'Wohooo', onPress })
 
-    // await expect(element(by.text(text))).toBeVisible()
+    await expect(element(by.text(text))).toBeVisible()
   })
 })

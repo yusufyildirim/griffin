@@ -1,12 +1,17 @@
 // Learn more https://docs.expo.io/guides/customizing-metro
 const { getDefaultConfig } = require('expo/metro-config')
 const path = require('path')
+const metroResolver = require('metro-resolver')
 
 // Find the workspace root, this can be replaced with `find-yarn-workspace-root`
 const workspaceRoot = path.resolve(__dirname, '../..')
 const projectRoot = __dirname
 
 const config = getDefaultConfig(projectRoot)
+
+if (process.env.GRIFFIN) {
+  config.resolver.sourceExts = ['griffin.root.js', ...config.resolver.sourceExts]
+}
 
 // 1. Watch all files within the monorepo
 config.watchFolders = [workspaceRoot]

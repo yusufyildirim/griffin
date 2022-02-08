@@ -1,9 +1,11 @@
 {
   "name": "griffin-test-app",
   "version": "1.0.0",
-  "main": "index.griffin.js",
+  "main": "index.js",
   "scripts": {
     "start": "expo start --dev-client",
+    "griffin:start": "GRIFFIN=true expo start --dev-client",
+    "griffin-cli:start": "GRIFFIN=true ./../cli/bin/dev start",
     "dev": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
