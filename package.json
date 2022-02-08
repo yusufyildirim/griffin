@@ -1,10 +1,14 @@
 {
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ],
+    "nohoist": []
+  },
   "scripts": {
+    "postinstall": "patch-package",
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "test": "turbo run test",
@@ -12,6 +16,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
+    "patch-package": "^6.4.7",
+    "postinstall-postinstall": "^2.1.0",
     "prettier": "^2.5.1",
     "turbo": "^1.1.2"
   },

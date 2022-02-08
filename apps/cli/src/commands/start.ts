@@ -29,6 +29,7 @@ export default class Start extends Command {
     })
 
     const customEnhanceMiddleware = config.server.enhanceMiddleware
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore can't mutate readonly config
     config.server.enhanceMiddleware = (metroMiddleware: any, server: Metro.Server) => {
       if (customEnhanceMiddleware) {

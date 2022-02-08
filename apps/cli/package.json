@@ -23,8 +23,9 @@
     "@react-native-community/cli-server-api": "^7.0.1",
     "express": "^4.17.2",
     "http": "^0.0.1-security",
-    "metro": "^0.67.0",
-    "metro-core": "^0.67.0",
+    "metro": "0.67",
+    "patch-package": "^6.4.7",
+    "postinstall-postinstall": "^2.1.0",
     "ws": "^8.5.0"
   },
   "devDependencies": {
@@ -62,6 +63,7 @@
     }
   },
   "scripts": {
+    "postinstall": "patch-package",
     "build": "shx rm -rf dist && tsc -b",
     "lint": "eslint . --ext .ts --config .eslintrc",
     "postpack": "shx rm -f oclif.manifest.json",

@@ -1,0 +1,12 @@
+diff --git a/node_modules/metro/src/lib/createWebsocketServer.js b/node_modules/metro/src/lib/createWebsocketServer.js
+index 92ecd29..72cd1b3 100644
+--- a/node_modules/metro/src/lib/createWebsocketServer.js
++++ b/node_modules/metro/src/lib/createWebsocketServer.js
+@@ -30,6 +30,7 @@ module.exports = function createWebsocketServer({ websocketServer }) {
+   const wss = new _ws.default.Server({
+     noServer: true,
+   });
++  wss.HMRServer = websocketServer
+   wss.on("connection", async (ws, req) => {
+     let connected = true;
+     const url = req.url;
