@@ -12,10 +12,15 @@ function jsonReviver(_key: string, value: unknown) {
   return value
 }
 
-export function serialize(object: Record<string, unknown>) {
+function serialize(object: Record<string, unknown>) {
   return JSON.stringify(object, jsonReplacer)
 }
 
-export function deserialize(json: string) {
+function deserialize(json: string) {
   return JSON.parse(json, jsonReviver)
+}
+
+export default {
+  serialize,
+  deserialize,
 }

@@ -75,12 +75,12 @@ export default class Start extends Command {
     }
 
     // Just to trigger it automatically
-    setTimeout(async () => {
-      const payload = await generateHMRPayload(
-        '/Users/yusufyildirim/development/griffin/apps/griffin-test-app/hooks/useUser.js',
-      )
-      console.log('HMR Payload', payload)
-    }, 5000)
+    // setTimeout(async () => {
+    //   const payload = await generateHMRPayload(
+    //     '/Users/yusufyildirim/development/griffin/apps/griffin-test-app/hooks/useUser.js',
+    //   )
+    //   console.log('HMR Payload', payload)
+    // }, 5000)
 
     // const payloadExample = {
     //   type: 'update',

@@ -1,17 +1,15 @@
 {
-  "name": "griffin",
+  "name": "@griffin/utils",
   "version": "0.1.0",
   "main": "src/index.ts",
-  "license": "MIT",
+  "private": true,
   "scripts": {
-    "build": "tsc --build",
     "lint": "eslint"
   },
-  "dependencies": {
-    "@griffin/utils": "*"
-  },
+  "files": [
+    "src/**"
+  ],
   "devDependencies": {
-    "@types/node": "^16.0.0",
     "config": "*",
     "tsconfig": "*"
   }

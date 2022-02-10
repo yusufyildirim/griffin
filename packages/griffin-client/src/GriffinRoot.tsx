@@ -1,9 +1,8 @@
 import * as React from 'react'
 import { View } from 'react-native'
-import { v4 as uuidv4 } from 'uuid'
 import GriffinComponentWrapper from './GriffinComponentWrapper'
 import { useSocket } from './hooks/useSocket'
-import { deserialize } from './utils/JSONSerializer'
+import { JSONSerializer, Random } from '@griffin/utils'
 
 type GriffinRootProps = {
   components: Record<string, React.ComponentType>
@@ -19,12 +18,12 @@ export default function GriffinRoot({ components, Wrapper }: GriffinRootProps) {
       console.log('Component Socket ID', socket.id)
     })
 
-    socket.on('CLIENT_MOUNT_COMPONENT', (componentId: string, serializedProps: string, cb) => {
-      const props = deserialize(serializedProps)
+    socket.on('CLIENT_MOUNT_COMPONENT', (componentId: string, serializedProps: string, _cb) => {
+      const props = JSONSerializer.deserialize(serializedProps)
       const Comp = components[componentId]
 
       if (Comp) {
-        internalComponentRef.current = { id: componentId, uniqueId: uuidv4() }
+        internalComponentRef.current = { id: componentId, uniqueId: Random.generateIdentifier() }
         setComponent(<Comp {...props} />)
       }
     })

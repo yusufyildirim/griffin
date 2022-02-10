@@ -1,8 +1,9 @@
-import { mount } from 'griffin'
+import { mount, mock } from 'griffin'
 
 describe('Profile Info', () => {
   it('renders text', async () => {
-    await mount('PROFILE_INFO', { children: text })
-    await expect(element(by.text(text))).toBeVisible()
+    await mount('PROFILE_INFO')
+    // await mock('../../hooks/useUser.js', 'useUser')
+    await expect(element(by.text('Authenticated!'))).toBeVisible()
   })
 })

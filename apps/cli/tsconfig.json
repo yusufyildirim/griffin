@@ -5,6 +5,7 @@
     "rootDir": "src",
     "outDir": "dist",
     "importHelpers": true,
+    "typeRoots": ["./typings", "@types"]
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "./build"]

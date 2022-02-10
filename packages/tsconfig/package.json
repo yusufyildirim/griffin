@@ -4,6 +4,11 @@
   "private": true,
   "main": "index.js",
   "files": [
-    "base.json"
-  ]
+    "base.json",
+    "node.json",
+    "react-native.json"
+  ],
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.2"
+  }
 }
