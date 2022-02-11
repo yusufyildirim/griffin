@@ -78,51 +78,65 @@ export default class Start extends Command {
       )
 
       const code: any = hmrJsBundle(delta, revision.graph, options)
-      return code
+
+      return {
+        revisionId: revision.id,
+        isInitialUpdate: false,
+        ...code,
+      }
+    }
+
+    function emit(payload: any) {
+      const clientGroups = HMRServer._clientGroups as Map<string, any>
+      const socketKey = clientGroups.keys().next()
+      const sockets = clientGroups.get(socketKey.value).clients as Set<any>
+
+      for (const socket of sockets) {
+        socket.sendFn(JSON.stringify(payload))
+      }
+    }
+
+    async function splitCode(path: string) {
+      const payload = await generateHMRPayload(path)
+
+      const [moduleId, moduleCode]: [moduleId: number, moduleCode: string] =
+        payload.modified[0].module
+      moduleCode.replaceAll('.griffin.mock', '').trim().split('\n')
+      return payload
     }
 
     // Just to trigger it automatically
-    // setTimeout(async () => {
-    //   const payload = await generateHMRPayload(
-    //     '/Users/yusufyildirim/development/griffin/apps/griffin-test-app/hooks/useUser.js',
-    //   )
-    //   console.log('HMR Payload', payload)
-    // }, 5000)
+    setTimeout(async () => {
+      // ORIGINAL PAYLOAD
+      const originalPayload = await generateHMRPayload(
+        '/Users/yusufyildirim/development/griffin/apps/griffin-test-app/hooks/useUser.js',
+      )
+      const originalModule: [moduleId: number, moduleCode: string] =
+        originalPayload.modified[0].module
+      const [_originalModuleId, _originalModuleCode] = originalModule
+      const splittedOriginalCode = originalModule[1].split(/\r?\n/)
 
-    // const payloadExample = {
-    //   type: 'update',
-    //   body: {
-    //     revisionId: 'fa16fe01642ee186fa16fe016',
-    //     isInitialUpdate: false,
-    //     added: [],
-    //     modified: [
-    //       {
-    //         module: [
-    //           606,
-    //           '__d(function (global, _$$_REQUIRE, _$$_IMPORT_DEFAULT, _$$_IMPORT_ALL, module, exports, _dependencyMap) {\n' +
-    //             '  Object.defineProperty(exports, "__esModule", {\n' +
-    //             '    value: true\n' +
-    //             '  });\n' +
-    //             '  exports.default = useUser;\n' +
-    //             '\n' +
-    //             '  function useUser() {\n' +
-    //             '    return {\n' +
-    //             '      authenticated: false\n' +
-    //             '    };\n' +
-    //             '  }\n' +
-    //             '},606,[],"hooks/useUser.js",{"3":[],"606":[3]});\n' +
-    //             '//# sourceMappingURL=http://localhost:8081/hooks/useUser.map?platform=ios&modulesOnly=true&app=org.name.griffintestapp&dev=true&minify=false&runModule=true&shallow=true\n' +
-    //             '//# sourceURL=http://localhost:8081/hooks/useUser.bundle?platform=ios&modulesOnly=true&app=org.name.griffintestapp&dev=true&minify=false&runModule=true&shallow=true\n',
-    //         ],
-    //         sourceMappingURL:
-    //           'http://localhost:8081/hooks/useUser.map?platform=ios&modulesOnly=true&app=org.name.griffintestapp&dev=true&minify=false&runModule=true&shallow=true',
-    //         sourceURL:
-    //           'http://localhost:8081/hooks/useUser.bundle?platform=ios&modulesOnly=true&app=org.name.griffintestapp&dev=true&minify=false&runModule=true&shallow=true',
-    //       },
-    //     ],
-    //     deleted: [],
-    //   },
-    // }
+      // MOCK PAYLOAD
+      const mockPayload = await generateHMRPayload(
+        '/Users/yusufyildirim/development/griffin/apps/griffin-test-app/hooks/useUser.griffin.mock.js',
+      )
+
+      const mockModule: [moduleId: number, moduleCode: string] = mockPayload.modified[0].module
+
+      // Assign original module id to mock
+      mockModule[0] = originalModule[0]
+
+      mockModule[1] = mockModule[1].replaceAll('.griffin.mock', '')
+
+      const splittedMockCode = mockModule[1].split(/\r?\n/)
+      splittedMockCode[splittedMockCode.length - 4] =
+        splittedOriginalCode[splittedOriginalCode.length - 4]
+
+      mockModule[1] = splittedMockCode.join('\n').trimEnd()
+      mockPayload.modified = [{ ...originalPayload.modified[0], module: mockModule }]
+
+      emit({ type: 'update', body: mockPayload })
+    }, 6000)
 
     this.log('Griffin Server Started!')
   }
