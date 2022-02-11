@@ -1,10 +1,13 @@
 {
-    "maxWorkers": 1,
-    "testEnvironment": "./environment",
-    "setupFilesAfterEnv": ["./setup.js"],
-    "testRunner": "jest-circus/runner",
-    "testTimeout": 120000,
-    "testRegex": "\\.griffin\\.test\\.js$",
-    "reporters": ["detox/runners/jest/streamlineReporter"],
-    "verbose": true
+  "maxWorkers": 1,
+  "testEnvironment": "./environment",
+  "setupFilesAfterEnv": ["./setup.js"],
+  "testRunner": "jest-circus/runner",
+  "testTimeout": 120000,
+  "testRegex": "\\.griffin\\.test\\.js$",
+  "reporters": ["detox/runners/jest/streamlineReporter"],
+  "verbose": true,
+  "collectCoverageFrom": [
+    "../*.{js,jsx,ts,tsx}"
+  ]
 }

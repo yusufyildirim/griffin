@@ -21,6 +21,14 @@ io.on('connection', socket => {
   socket.on('COMPONENT_MOUNTED', id => {
     socket.broadcast.emit('COMPONENT_MOUNTED', id)
   })
+
+  socket.on('COLLECT_COVERAGE', () => {
+    socket.broadcast.emit('COLLECT_COVERAGE')
+  })
+
+  socket.on('COLLECT_COVERAGE_RESPONSE', (coverage: Record<string, any>) => {
+    socket.broadcast.emit('COLLECT_COVERAGE_RESPONSE', coverage)
+  })
 })
 
 server.listen(5678, () => {

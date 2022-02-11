@@ -1,5 +1,5 @@
 {
-  "name": "cli",
+  "name": "@griffin/cli",
   "version": "0.0.0",
   "description": "Griffin CLI",
   "author": "Yusuf YILDIRIM",

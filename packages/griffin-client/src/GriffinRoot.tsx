@@ -9,6 +9,7 @@ type GriffinRootProps = {
   Wrapper: React.ComponentType
 }
 export default function GriffinRoot({ components, Wrapper }: GriffinRootProps) {
+  // @ts-ignore
   const internalComponentRef = React.useRef<{ id: string; uniqueId: string }>()
   const [Component, setComponent] = React.useState<JSX.Element | null>(null)
   const socket = useSocket()
@@ -27,6 +28,15 @@ export default function GriffinRoot({ components, Wrapper }: GriffinRootProps) {
         setComponent(<Comp {...props} />)
       }
     })
+
+    socket.on('COLLECT_COVERAGE', cb => {
+      // @ts-ignore
+      socket.emit('COLLECT_COVERAGE_RESPONSE', global['__coverage__'])
+    })
+
+    // const Comp = components['BUTTON']
+    // internalComponentRef.current = { id: 'BUTTON', uniqueId: Random.generateIdentifier() }
+    // setComponent(<Comp text="mahmut" onPress={() => {}} />)
   }, [socket])
 
   if (!internalComponentRef.current?.id) return null

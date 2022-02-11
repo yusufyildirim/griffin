@@ -23,6 +23,13 @@ export default class Start extends Command {
 
     const config = await Metro.loadConfig()
 
+    // A quick workaround to make metro respect to babel.config.js
+    // @ts-ignore
+    config.transformer.babelTransformerPath = require.resolve(
+      'metro-react-native-babel-transformer',
+    )
+    // @ts-ignore
+    config.resetCache = true
     const { middleware, attachToServer } = createReactNativeDevServerMiddleware({
       port: config.server.port,
       watchFolders: config.watchFolders,

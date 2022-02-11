@@ -1,5 +1,9 @@
 node_modules
 
+.coverage
+
 .turbo
 
 build
+
+coverage

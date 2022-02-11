@@ -1,8 +1,10 @@
 import { io, Socket } from 'socket.io-client'
 import { JSONSerializer } from '@griffin/utils'
+import { createCoverageMap } from 'istanbul-lib-coverage'
 import path from 'path'
 
 let socket: Socket | undefined
+const coverageMap = createCoverageMap({})
 
 export async function init() {
   return new Promise((resolve, _reject) => {
@@ -15,6 +17,7 @@ export async function init() {
 }
 
 export async function down() {
+  await collectCoverage()
   socket?.close()
 }
 
@@ -38,4 +41,23 @@ export async function mount(componentId: string, props?: Record<string, unknown>
 export async function mock(targetModulePath: string, mockId: string) {
   const absoluteModulePath = path.resolve(targetModulePath)
   console.log(`Mocking ${absoluteModulePath} with ${mockId}...`)
+}
+
+export async function collectCoverage() {
+  return new Promise((resolve, reject) => {
+    socket?.on('COLLECT_COVERAGE_RESPONSE', coverage => {
+      coverageMap.merge(coverage)
+      // Filter files with griffin extension.
+      // We should respect to jest settings or provide our own way to define filters
+      coverageMap.filter(key => {
+        if (key.includes('.griffin')) return false
+        return true
+      })
+      // @ts-ignore
+      global.__coverage__ = JSON.parse(JSON.stringify(coverageMap.data))
+      resolve(coverage)
+    })
+
+    socket?.emit('COLLECT_COVERAGE')
+  })
 }

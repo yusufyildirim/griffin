@@ -2,10 +2,9 @@ import { mount } from 'griffin'
 
 describe('Button', () => {
   it('renders', async () => {
-    const mahmut = 1
-    const onPress = () => console.log(`Hadi lan`)
+    const onPress = () => console.log(`Test`)
     await mount('BUTTON', { text: 'Wohooo', onPress })
 
-    await expect(element(by.text(text))).toBeVisible()
+    await expect(element(by.text('Wohooo'))).toBeVisible()
   })
 })
