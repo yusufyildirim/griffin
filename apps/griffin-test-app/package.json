@@ -10,7 +10,7 @@
     "web": "expo start --web",
     "detox:build:ios": "detox build --configuration ios",
     "detox:test:ios": "detox test --configuration ios --reuse",
-    "test": "detox test --configuration ios --reuse",
+    "detox:test": "detox test --configuration ios --reuse --collectCoverage",
     "test:coverage": "detox test --configuration ios --reuse --collectCoverage"
   },
   "dependencies": {

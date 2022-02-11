@@ -1,0 +1,28 @@
+{
+  "name": "@griffin/metro",
+  "version": "0.1.0",
+  "main": "./dist/index.js",
+  "private": true,
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --external metro-react-native-babel-transformer",
+    "dev": "tsup src/index.ts --format esm,cjs --watch --dts --external metro-react-native-babel-transformer",
+    "postinstall": "patch-package",
+    "lint": "eslint"
+  },
+  "files": [
+    "dist/**"
+  ],
+  "dependencies": {
+    "@react-native-community/cli-server-api": "^7.0.1",
+    "http": "^0.0.1-security",
+    "metro": "0.67",
+    "patch-package": "^6.4.7",
+    "postinstall-postinstall": "^2.1.0",
+    "ws": "^8.5.0"
+  },
+  "devDependencies": {
+    "config": "*",
+    "tsconfig": "*",
+    "tsup": "^5.11.13"
+  }
+}

@@ -17,18 +17,15 @@
     "/oclif.manifest.json"
   ],
   "dependencies": {
+    "@griffin/metro": "0.1.0",
+    "@griffin/server": "0.1.0",
     "@oclif/core": "^1",
     "@oclif/plugin-help": "^5",
     "@oclif/plugin-plugins": "^2.0.1",
-    "@react-native-community/cli-server-api": "^7.0.1",
-    "express": "^4.17.2",
-    "http": "^0.0.1-security",
-    "metro": "0.67",
-    "patch-package": "^6.4.7",
-    "postinstall-postinstall": "^2.1.0",
-    "ws": "^8.5.0"
+    "express": "^4.17.2"
   },
   "devDependencies": {
+    "@griffin/metro": "0.1.0",
     "@oclif/test": "^2",
     "@types/chai": "^4",
     "@types/mocha": "^9.0.0",
@@ -63,7 +60,6 @@
     }
   },
   "scripts": {
-    "postinstall": "patch-package",
     "build": "shx rm -rf dist && tsc -b",
     "lint": "eslint . --ext .ts --config .eslintrc",
     "postpack": "shx rm -f oclif.manifest.json",

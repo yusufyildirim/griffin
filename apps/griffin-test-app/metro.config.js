@@ -2,7 +2,7 @@
 const { getDefaultConfig } = require('expo/metro-config')
 const path = require('path')
 const metroResolver = require('metro-resolver')
-console.log('Bunu oku bari')
+
 // Find the workspace root, this can be replaced with `find-yarn-workspace-root`
 const workspaceRoot = path.resolve(__dirname, '../..')
 const projectRoot = __dirname

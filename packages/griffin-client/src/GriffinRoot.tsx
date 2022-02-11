@@ -34,9 +34,9 @@ export default function GriffinRoot({ components, Wrapper }: GriffinRootProps) {
       socket.emit('COLLECT_COVERAGE_RESPONSE', global['__coverage__'])
     })
 
-    // const Comp = components['BUTTON']
-    // internalComponentRef.current = { id: 'BUTTON', uniqueId: Random.generateIdentifier() }
-    // setComponent(<Comp text="mahmut" onPress={() => {}} />)
+    const Comp = components['PROFILE_INFO']
+    internalComponentRef.current = { id: 'PROFILE_INFO', uniqueId: Random.generateIdentifier() }
+    setComponent(<Comp />)
   }, [socket])
 
   if (!internalComponentRef.current?.id) return null

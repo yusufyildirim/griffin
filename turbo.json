@@ -3,9 +3,6 @@
     "build": {
       "dependsOn": [
         "^build"
-      ],
-      "outputs": [
-        "dist/**"
       ]
     },
     "lint": {
@@ -15,6 +12,9 @@
       "cache": false
     },
     "test": {
+      "cache": false
+    },
+    "detox:test": {
       "cache": false
     }
   }

@@ -5,7 +5,6 @@
   "extends": "./base.json",
   "compilerOptions": {
     "target": "ES6",
-    "incremental": true,
     "module": "commonjs",
     "resolveJsonModule": true,
     "sourceMap": true
