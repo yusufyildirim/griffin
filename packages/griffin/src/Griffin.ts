@@ -39,8 +39,11 @@ export async function mount(componentId: string, props?: Record<string, unknown>
 }
 
 export async function mock(targetModulePath: string, mockId: string) {
-  const absoluteModulePath = path.resolve(targetModulePath)
-  console.log(`Mocking ${absoluteModulePath} with ${mockId}...`)
+  return new Promise((resolve, reject) => {
+    socket?.emit('MOCK_MODULE', targetModulePath, mockId, () => {
+      resolve(null)
+    })
+  })
 }
 
 export async function collectCoverage() {

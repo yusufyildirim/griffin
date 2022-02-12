@@ -3,6 +3,7 @@ import { View } from 'react-native'
 import GriffinComponentWrapper from './GriffinComponentWrapper'
 import { useSocket } from './hooks/useSocket'
 import { JSONSerializer, Random } from '@griffin/utils'
+import { DevSettings } from 'react-native'
 
 type GriffinRootProps = {
   components: Record<string, React.ComponentType>
@@ -13,6 +14,9 @@ export default function GriffinRoot({ components, Wrapper }: GriffinRootProps) {
   const internalComponentRef = React.useRef<{ id: string; uniqueId: string }>()
   const [Component, setComponent] = React.useState<JSX.Element | null>(null)
   const socket = useSocket()
+
+  // ts-ignore
+  DevSettings._nativeModule.setHotLoadingEnabled(true)
 
   React.useEffect(() => {
     socket.on('connect', () => {

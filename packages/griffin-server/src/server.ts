@@ -1,8 +1,9 @@
 import express from 'express'
 import http from 'http'
 import { Server } from 'socket.io'
+import type { HMRService } from '@griffin/metro'
 
-export function runGriffinServer() {
+export function runGriffinServer(hmrService: HMRService) {
   const app = express()
   const server = http.createServer(app)
 
@@ -11,7 +12,6 @@ export function runGriffinServer() {
   io.on('connection', socket => {
     console.log('a user connected')
     socket.on('MOUNT_COMPONENT', (componentId, props, callback) => {
-      console.log(componentId, props, callback)
       socket.broadcast.emit('CLIENT_MOUNT_COMPONENT', componentId, props)
       callback()
     })
@@ -27,6 +27,19 @@ export function runGriffinServer() {
     socket.on('COLLECT_COVERAGE_RESPONSE', (coverage: Record<string, any>) => {
       socket.broadcast.emit('COLLECT_COVERAGE_RESPONSE', coverage)
     })
+
+    socket.on(
+      'MOCK_MODULE',
+      async (originalModulePath: string, mockModulePath: string, callback) => {
+        const payload = await hmrService.mockModule(
+          '/Users/yusufyildirim/development/griffin/apps/griffin-test-app/hooks/useUser.js',
+          '/Users/yusufyildirim/development/griffin/apps/griffin-test-app/hooks/useUser.griffin.mock.js',
+        )
+
+        hmrService.emit({ type: 'update', body: payload })
+        callback()
+      },
+    )
   })
 
   server.listen(5678, () => {

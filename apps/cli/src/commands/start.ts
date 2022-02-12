@@ -18,19 +18,7 @@ export default class Start extends Command {
   public async run(): Promise<void> {
     const { args, flags } = await this.parse(Start)
 
-    const [_metroHttpServer, HMRService] = await runMetro()
-    const _griffinServer = await runGriffinServer()
-
-    setTimeout(async () => {
-      const payload = await HMRService.mockModule(
-        '/Users/yusufyildirim/development/griffin/apps/griffin-test-app/hooks/useUser.js',
-        '/Users/yusufyildirim/development/griffin/apps/griffin-test-app/hooks/useUser.griffin.mock.js',
-      )
-
-      HMRService.emit({ type: 'update', body: payload })
-
-      console.log('Payload', payload)
-      console.log('Detail', payload.modified)
-    }, 10_000)
+    const [_metroHttpServer, hmrService] = await runMetro()
+    const _griffinServer = await runGriffinServer(hmrService)
   }
 }
