@@ -1,5 +1,31 @@
 declare module 'metro/src/DeltaBundler/Serializers/hmrJsBundle' {
-  export default function hmrJsBundle(delta: any, graph: any, options: any) {}
+  export type MixedOutput = {
+    readonly data: unknown
+    readonly type: string
+  }
+
+  type DeltaResult<T = MixedOutput> = any
+  type Graph<T = MixedOutput> = any
+  type Options<T = MixedOutput> = any
+
+  type ModuleId = number
+  type ModuleCode = string
+
+  type HmrModule = {
+    readonly module: [ModuleId, ModuleCode]
+    readonly sourceMappingURL: string
+    readonly sourceURL: string
+  }
+
+  export default function hmrJSBundle(
+    delta: DeltaResult<>,
+    graph: Graph<>,
+    options: Options,
+  ): {
+    readonly added: ReadonlyArray<HmrModule>
+    readonly deleted: ReadonlyArray<number>
+    readonly modified: ReadonlyArray<HmrModule>
+  }
 }
 
 declare module 'metro/src/shared/output/bundle' {
@@ -164,6 +190,8 @@ declare module 'metro' {
     middleware: Middleware
   }
 
+  export type WebsocketEndpoints = { '/hot'?: WebSocketServer & { HMRServer: HmrServer } }
+
   type RunServerOptions = {
     hasReducedPerformance?: boolean
     hmrEnabled?: boolean
@@ -174,7 +202,7 @@ declare module 'metro' {
     secure?: boolean
     secureCert?: string
     secureKey?: string
-    websocketEndpoints?: Record<string, WebSocketServer>
+    websocketEndpoints?: WebsocketEndpoints
   }
 
   type BuildGraphOptions = {
@@ -378,7 +406,16 @@ declare module 'metro' {
   import { IncomingMessage, ServerResponse } from 'http'
 
   // TODO: type declaration
-  type IncrementalBundler = unknown
+  interface IncrementalBundler {
+    getRevision(revisionId: RevisionId): Promise<GraphRevision> | null | undefined
+    updateGraph(
+      revision: GraphRevision,
+      reset: boolean,
+    ): Promise<{
+      delta: DeltaResult<>
+      revision: GraphRevision
+    }>
+  }
 
   export class Server {
     constructor(config: ConfigT, options?: ServerOptions)
@@ -491,6 +528,27 @@ declare module 'metro' {
     createModuleIdFactory?: () => (path: string) => number
     onProgress?: (transformedFileCount: number, totalFileCount: number) => void
   }
+  //#endregion
 
+  //#region metro/src/index.js
+  type RevisionId = string
+  type Client = {
+    optedIntoHMR: boolean
+    revisionIds: Array<RevisionId>
+    readonly sendFn: (payload: string) => void
+  }
+  type ClientGroup = {
+    readonly clients: Set<Client>
+    clientUrl: EntryPointURL
+    revisionId: RevisionId
+    readonly unlisten: () => void
+  }
+
+  export class HmrServer<TClient extends Client = any> {
+    _config: ConfigT
+    _bundler: IncrementalBundler
+    _createModuleId: (path: string) => number
+    _clientGroups: Map<RevisionId, ClientGroup>
+  }
   //#endregion
 }
